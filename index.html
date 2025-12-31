@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My New Year Love ❤️</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  color: #fff;
+}
+
+.container {
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  animation: fadeIn 1.2s ease;
+}
+
+h1 {
+  font-size: 2.2rem;
+  margin-bottom: 10px;
+  text-shadow: 0 3px 10px rgba(0,0,0,0.3);
+}
+
+#countdown {
+  font-size: 1.3rem;
+  margin-bottom: 25px;
+  font-weight: bold;
+}
+
+.question {
+  font-size: 1.25rem;
+  margin-bottom: 20px;
+}
+
+.buttons {
+  position: relative;
+  height: 120px;
+}
+
+button {
+  padding: 12px 28px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+#yesBtn {
+  background: #ff003c;
+  color: white;
+  position: absolute;
+  right: 10px;
+}
+
+#noBtn {
+  background: white;
+  color: #ff003c;
+  position: absolute;
+  left: 10px;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+
+/* LOVE PAGE */
+.love-page {
+  display: none;
+}
+
+.love-page h1 {
+  font-size: 2.4rem;
+}
+
+.fireworks {
+  font-size: 2.3rem;
+  margin-top: 15px;
+  animation: float 2s infinite alternate;
+}
+
+/* HEARTS */
+.heart {
+  position: fixed;
+  bottom: -10px;
+  font-size: 18px;
+  animation: rise 6s linear infinite;
+}
+
+/* PHOTO BUBBLES */
+.bubble {
+  position: fixed;
+  bottom: -120px;
+  border-radius: 50%;
+  background-image: url("love.jpg");
+  background-size: cover;
+  background-position: center;
+  animation: bubbleUp linear infinite;
+  box-shadow: 0 0 20px rgba(255,255,255,0.6);
+}
+
+@keyframes bubbleUp {
+  from { transform: translateY(0) scale(0.8); opacity: 1; }
+  to { transform: translateY(-110vh) scale(1.2); opacity: 0; }
+}
+
+@keyframes rise {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-100vh); opacity: 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes float {
+  from { transform: translateY(0); }
+  to { transform: translateY(-12px); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- BACKGROUND MUSIC -->
+<audio id="bgMusic" loop>
+  <source src="love.mp3" type="audio/mpeg">
+</audio>
+
+<!-- PAGE 1 -->
+<div class="container" id="mainPage">
+  <h1>⏳ Countdown to 2026</h1>
+  <div id="countdown">Loading...</div>
+
+  <div class="question">Want to know something, my love? 💕</div>
+
+  <div class="buttons">
+    <button id="noBtn">No</button>
+    <button id="yesBtn">Yes</button>
+  </div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="container love-page" id="lovePage">
+  <h1>I LOVE YOU 💖<br>MY PRETTY PRINCESS</h1>
+  <h2>HAPPY NEW YEAR 2026 !!!!!!</h2>
+  <div class="fireworks">🎆🎇✨💞🎉🎆</div>
+</div>
+
+<script>
+const countdownEl = document.getElementById("countdown");
+const targetDate = new Date("January 1, 2026 00:00:00").getTime();
+let switched = false;
+
+setInterval(() => {
+  const now = new Date().getTime();
+  const distance = targetDate - now;
+
+  if (distance <= 0 && !switched) {
+    switchToLove();
+    switched = true;
+  }
+
+  const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+  countdownEl.innerHTML = `${d}d ${h}h ${m}m ${s}s`;
+}, 1000);
+
+// NO BUTTON ESCAPE 😆
+const noBtn = document.getElementById("noBtn");
+function moveNo() {
+  noBtn.style.left = Math.random() * 250 + "px";
+  noBtn.style.top = Math.random() * 80 + "px";
+}
+noBtn.addEventListener("click", moveNo);
+noBtn.addEventListener("touchstart", moveNo);
+
+// YES BUTTON MANUAL
+document.getElementById("yesBtn").addEventListener("click", switchToLove);
+
+function switchToLove() {
+  document.getElementById("mainPage").style.display = "none";
+  document.getElementById("lovePage").style.display = "block";
+  startBubbles();
+  startMusic();
+}
+
+// FLOATING HEARTS
+setInterval(() => {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = Math.random() * 20 + 15 + "px";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 6000);
+}, 600);
+
+// PHOTO BUBBLES
+function startBubbles() {
+  setInterval(() => {
+    const bubble = document.createElement("div");
+    bubble.className = "bubble";
+    bubble.style.left = Math.random() * 100 + "vw";
+    const size = Math.random() * 40 + 60;
+    bubble.style.width = bubble.style.height = size + "px";
+    bubble.style.animationDuration = Math.random() * 6 + 6 + "s";
+    document.body.appendChild(bubble);
+    setTimeout(() => bubble.remove(), 12000);
+  }, 700);
+}
+
+// MUSIC
+function startMusic() {
+  const music = document.getElementById("bgMusic");
+  music.volume = 0.6;
+  music.play().catch(() => {});
+}
+</script>
+
+</body>
+</html>
